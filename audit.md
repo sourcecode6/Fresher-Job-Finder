@@ -42,16 +42,43 @@ To protect user privacy (resume parsing):
 
 | Company | ATS Strategy | robots.txt Checked? | Honest User-Agent? | Status |
 |---|---|---|---|---|
-| **Samsung Research** | Workday JSON POST | ✅ Yes | ✅ Yes | Compliant |
-| **Graphcore** | Greenhouse JSON API | ✅ Yes | ✅ Yes | Compliant |
-| **Apple** | Playwright (Headless Chromium) | ✅ Yes | ✅ Yes (Browser Context) | Compliant |
-| **Cerebras** | AshbyHQ JSON API | ✅ Yes | ✅ Yes | Compliant |
 | **NVIDIA** | Workday JSON POST | ✅ Yes | ✅ Yes | Compliant |
-| **Google** | Hybrid (Playwright + Axios) | ✅ Yes | ✅ Yes | Compliant |
-| **Microsoft** | Eightfold AI JSON-LD | ✅ Yes | ✅ Yes | Compliant |
-| **AMD** | iCIMS JSON API | ✅ Yes | ✅ Yes | Compliant |
-| **Arista** | SmartRecruiters API | ✅ Yes | ✅ Yes | Compliant |
-| **Cisco** | Avature JSON-LD | ✅ Yes | ✅ Yes | Compliant |
+| **Microsoft** | Eightfold API | ✅ Yes | ✅ Yes | Compliant |
+| **AMD** | iCIMS API | ✅ Yes | ✅ Yes | Compliant |
+| **Broadcom** | Workday JSON POST | ✅ Yes | ✅ Yes | Compliant |
+| **Arista Networks** | SmartRecruiters API | ✅ Yes | ✅ Yes | Compliant |
+| **Qualcomm** | Eightfold API | ✅ Yes | ✅ Yes | Compliant |
+| **Cloudflare** | Greenhouse JSON API | ✅ Yes | ✅ Yes | Compliant |
+| **Cisco** | Custom Cisco API | ✅ Yes | ✅ Yes | Compliant |
+| **ARM** | Avature JSON-LD | ✅ Yes | ✅ Yes | Compliant |
+| **Intel** | Workday JSON POST | ✅ Yes | ✅ Yes | Compliant |
+| **Cerebras Systems** | AshbyHQ JSON API | ✅ Yes | ✅ Yes | Compliant |
+| **Juniper Networks** | Workday JSON POST | ✅ Yes | ✅ Yes | Compliant |
+| **NetApp** | Eightfold API | ✅ Yes | ✅ Yes | Compliant |
+| **Hewlett Packard Enterprise** | Workday JSON POST (Disabled) | ✅ Yes | ✅ Yes | Disabled |
+| **Samsung Research** | Workday JSON POST | ✅ Yes | ✅ Yes | Compliant |
+| **NXP Semiconductors** | Workday JSON POST | ✅ Yes | ✅ Yes | Compliant |
+| **Ericsson** | Eightfold API (Disabled) | ✅ Yes | ✅ Yes | Disabled |
+| **Graphcore** | Greenhouse JSON API | ✅ Yes | ✅ Yes | Compliant |
+| **Google** | Playwright API (Disabled) | ✅ Yes | ✅ Yes | Disabled |
+| **Meta** | Unknown API (Disabled) | ✅ Yes | ✅ Yes | Disabled |
+| **Apple** | Apple API (Disabled) | ✅ Yes | ✅ Yes | Disabled |
+| **Amazon (AWS)** | Unknown API (Disabled) | ✅ Yes | ✅ Yes | Disabled |
+| **Groq** | Unknown API (Disabled) | ✅ Yes | ✅ Yes | Disabled |
+| **Nokia** | Unknown API (Disabled) | ✅ Yes | ✅ Yes | Disabled |
+| **Tenstorrent** | Unknown API (Disabled) | ✅ Yes | ✅ Yes | Disabled |
+| **IBM** | IBM Search API (Disabled) | ✅ Yes | ✅ Yes | Disabled |
+| **Marvell** | Workday JSON POST | ✅ Yes | ✅ Yes | Compliant |
+| **Cadence** | Workday JSON POST | ✅ Yes | ✅ Yes | Compliant |
+| **Silicon Labs** | Workday JSON POST | ✅ Yes | ✅ Yes | Compliant |
+| **Micron** | Workday JSON POST | ✅ Yes | ✅ Yes | Compliant |
+| **Microchip** | Workday JSON POST | ✅ Yes | ✅ Yes | Compliant |
+| **Motorola Solutions** | Workday JSON POST | ✅ Yes | ✅ Yes | Compliant |
+| **Synopsys** | Avature API (Disabled) | ✅ Yes | ✅ Yes | Disabled |
+| **Keysight** | Jibe API | ✅ Yes | ✅ Yes | Compliant |
+| **Celestica** | SuccessFactors HTML/API | ✅ Yes | ✅ Yes | Compliant |
+| **MediaTek** | Mediatek API (Disabled) | ✅ Yes | ✅ Yes | Disabled |
+| **Texas Instruments** | Ti API (Disabled) | ✅ Yes | ✅ Yes | Disabled |
 
 > *Note: Remaining Phase 3 companies will automatically inherit these compliance measures as they use the shared `utils` pipeline.*
 
@@ -62,5 +89,5 @@ As a **Personal Use Application** running strictly on a local Windows PC (SQLite
 - The system processes public enterprise data (job descriptions) rather than Personal Identifiable Information (PII). User data (multiple resumes/email/hashes) never leaves the local machine.
 
 ---
-**Audit Date**: 2026-09-06
+**Audit Date**: 2026-09-27
 **Overall Compliance Status**: ✅ FULLY COMPLIANT

@@ -80,7 +80,7 @@ Tracks registered user profiles and configuration preferences.
 ### 3.2. `companies`
 Lists tracked employers, ATS portals, scraped records, and degradation tracking.
 - `name` (TEXT, PRIMARY KEY): Unique company identifier (e.g., "AMD", "NVIDIA").
-- `ats` (TEXT): Portal type (e.g., "workday", "smartrecruiters", "cisco", "eightfold", "eightfold_v2", "greenhouse", "amd", "ibm", "arm").
+- `ats` (TEXT): Portal type (e.g., "workday", "smartrecruiters", "cisco", "eightfold", "eightfold_v2", "greenhouse", "amd", "ibm", "arm", "jibe", "successfactors").
 - `tier` (INTEGER): Priority level for scraping.
 - `career_url` (TEXT): URL to the career home page.
 - `status` (TEXT): Status flags (`active`, `degraded`). Checked via database constraint.

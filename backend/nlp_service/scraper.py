@@ -122,7 +122,7 @@ def run_acquisition_cycle():
             for k, v in config.items():
                 if k not in c_dict:
                     c_dict[k] = v
-        companies.append(c_dict)
+            companies.append(c_dict)
 
     settings = load_settings()
     max_workers = settings.get('maxConcurrentCompanies', 3)

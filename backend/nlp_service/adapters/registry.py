@@ -9,6 +9,11 @@ from backend.nlp_service.adapters.greenhouse import scrape_greenhouse
 from backend.nlp_service.adapters.ibm import scrape_ibm
 from backend.nlp_service.adapters.smartrecruiters import scrape_smartrecruiters
 from backend.nlp_service.adapters.workday import scrape_workday
+from backend.nlp_service.adapters.successfactors import scrape_successfactors
+from backend.nlp_service.adapters.mediatek import scrape_mediatek
+from backend.nlp_service.adapters.ti import scrape_ti
+from backend.nlp_service.adapters.avature import scrape_avature
+from backend.nlp_service.adapters.jibe import scrape_jibe
 
 def get_target_url(ats, company):
     urls = {
@@ -17,11 +22,16 @@ def get_target_url(ats, company):
         'workday': lambda c: f"https://{c.get('workdaySubdomain')}.myworkdayjobs.com/wday/cxs/{c.get('workdayTenant')}/{c.get('workdaySite')}/jobs",
         'smartrecruiters': lambda c: f"https://api.smartrecruiters.com/v1/companies/{c.get('smartRecruitersId')}/postings",
         'ashbyhq': lambda c: f"https://api.ashbyhq.com/posting-api/job-board/{c.get('board_token')}?includeMultipleLocations=true",
-        'greenhouse': lambda c: f"https://boards-api.greenhouse.io/v1/boards/{c.get('board_token')}/jobs?content=true"
+        'greenhouse': lambda c: f"https://boards-api.greenhouse.io/v1/boards/{c.get('board_token')}/jobs?content=true",
+        'successfactors': lambda c: f"https://careers.{c.get('sf_domain')}.com/search/",
+        'mediatek': lambda c: c.get('careerUrl'),
+        'ti': lambda c: c.get('careerUrl'),
+        'avature': lambda c: c.get('careerUrl'),
+        'jibe': lambda c: c.get('careerUrl')
     }
     if ats in urls:
         return urls[ats](company)
-    return company.get('career_url')
+    return company.get('careerUrl')
 
 def run_adapter(ats, company, filters):
     adapters = {
@@ -35,7 +45,12 @@ def run_adapter(ats, company, filters):
         'greenhouse': scrape_greenhouse,
         'ibm': scrape_ibm,
         'smartrecruiters': scrape_smartrecruiters,
-        'workday': scrape_workday
+        'workday': scrape_workday,
+        'successfactors': scrape_successfactors,
+        'mediatek': scrape_mediatek,
+        'ti': scrape_ti,
+        'avature': scrape_avature,
+        'jibe': scrape_jibe
     }
     if ats in adapters:
         return adapters[ats](company, filters)

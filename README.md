@@ -1,6 +1,6 @@
 # AI Job Scraper — Personal Use
 
-A local backend service that scrapes job listings from 11 major tech companies every 6 hours, matches them against your resume using semantic AI, and emails you the matches.
+A local backend service that scrapes job listings from 25+ major tech companies every 8 hours, matches them against your resume using semantic AI, and emails you the matches.
 
 **No UI. Email-only. Runs on your PC.**
 
@@ -28,7 +28,7 @@ backend\setup.bat
 | `EMAIL_USER` | Your Gmail address |
 | `EMAIL_PASS` | Gmail App Password ([get one here](https://myaccount.google.com/apppasswords)) |
 | `NOTIFY_EMAIL` | Where to send job digests (usually same as above) |
-| `MATCH_THRESHOLD` | Min match % to notify (default: 30) |
+| `MATCH_THRESHOLD | Min match % to notify (default: 50) |
 | `DATA_RETENTION_DAYS` | Days to keep job data (default: 3) |
 | `SCRAPE_INTERVAL_HOURS` | How often to scrape (default: 6) |
 | `USER_YOE` | Your Years of Experience (default: 4) |
@@ -67,7 +67,7 @@ curl -X POST http://localhost:3000/api/users \
   -d '{
     "email": "you@gmail.com",
     "selectedCompanies": ["NVIDIA", "Google", "Intel", "Microsoft"],
-    "matchThreshold": 30
+    "matchThreshold": 50
   }'
 ```
 
@@ -105,24 +105,33 @@ curl -X POST "http://localhost:3000/api/admin/activate?company=NVIDIA"
 
 ## Supported Companies
 
-| Company | ATS / Method | Location Filter | Expected Jobs |
-|---|---|---|---|
-| NVIDIA | Workday JSON POST | India + Remote | ~40 |
-| Google | Playwright (SPA) | India / Engineering | ~10-20 |
-| Arista Networks | SmartRecruiters REST API | India | ~33 |
-| Cisco Systems | Phenom People widgets API | India | ~150 |
-| Qualcomm | Eightfold AI pcsx API | India | ~414 |
-| AMD | iCIMS/Attract GET API | India | ~225 |
-| Broadcom | Workday JSON POST | India + Remote | ~60 |
-| Intel | Workday JSON POST | India + Remote | ~40 |
-| Microsoft | Eightfold AI pcsx API | India | ~200 |
-| IBM | IBM Search API | India / Software Engineering | ~362 |
-| Ericsson | Eightfold AI pcsx API | India | ~121 |
-| Cloudflare | Greenhouse API | India | TBD |
-| NetApp | Eightfold AI v2 API | India | TBD |
-| Hewlett Packard Enterprise | Workday JSON POST | India + Remote | TBD |
-| Juniper Networks | Workday JSON POST | India + Remote | TBD |
-| NXP Semiconductors | Workday JSON POST | India + Remote | TBD |
+| Company | ATS / Method | Location Filter |
+|---|---|---|
+| NVIDIA | Workday JSON POST | India + Remote |
+| Google | Playwright (SPA) | India / Engineering |
+| Arista Networks | SmartRecruiters REST API | India |
+| Cisco Systems | Custom `cisco` API | India |
+| Qualcomm | Eightfold AI pcsx API | India |
+| AMD | iCIMS/Attract GET API | India |
+| Broadcom | Workday JSON POST | India + Remote |
+| Intel | Workday JSON POST | India + Remote |
+| Microsoft | Eightfold AI pcsx API | India |
+| Cloudflare | Greenhouse API | None |
+| NetApp | Eightfold AI v2 API | None |
+| Juniper Networks | Workday JSON POST | None |
+| NXP Semiconductors | Workday JSON POST | None |
+| Cerebras Systems | AshbyHQ API | None |
+| Samsung Research | Workday JSON POST | India + Remote |
+| Graphcore | Greenhouse API | None |
+| Marvell | Workday JSON POST | None |
+| Cadence | Workday JSON POST | None |
+| Silicon Labs | Workday JSON POST | None |
+| Micron | Workday JSON POST | None |
+| Microchip | Workday JSON POST | None |
+| Motorola Solutions | Workday JSON POST | None |
+| Keysight | Jibe API | None |
+| Celestica | SuccessFactors HTML | None |
+| *IBM, Ericsson, HPE, MediaTek, TI, Synopsys* | *(Currently Disabled)* | - |
 
 ---
 
@@ -131,7 +140,7 @@ curl -X POST "http://localhost:3000/api/admin/activate?company=NVIDIA"
 ```
 Startup → Scrape all companies → Local Job Embeddings (offline model)
        → Compare against your resume vector (cosine similarity)
-       → Email matches ≥ threshold % → Repeat every 6 hours
+       → Email matches ≥ threshold % → Repeat every 8 hours
 ```
 
 1. **Scraping**: Uses official ATS APIs where available, falls back to JSON-LD structured data or clean widget POST requests.
@@ -168,7 +177,7 @@ Startup → Scrape all companies → Local Job Embeddings (offline model)
 
 ## Running on GitHub Actions (Automated)
 
-Instead of running the server locally, you can automate this pipeline to run every 6 hours using GitHub Actions.
+Instead of running the server locally, you can automate this pipeline to run every 8 hours using GitHub Actions.
 
 ### Setup Instructions
 1. **Push Changes to GitHub**: Ensure `.github/workflows/scrape_and_match.yml`, `backend/nlp_service/workflow_runner.py`, and code modifications are pushed to your repository.
@@ -176,10 +185,10 @@ Instead of running the server locally, you can automate this pipeline to run eve
    - `EMAIL_USER`: Your Gmail address (sender).
    - `EMAIL_PASS`: Your 16-character Gmail App Password.
    - `NOTIFY_EMAIL`: Where you want to receive the digest.
-   - `MATCH_THRESHOLD` (optional, default: `65`): Min cosine similarity percentage.
+   - `MATCH_THRESHOLD` (optional, default: `50`): Min cosine similarity percentage.
    - `DATA_RETENTION_DAYS` (optional, default: `3`): Job retention limit.
 3. **Enable Write Permissions**:
    - Go to **Settings** -> **Actions** -> **General** -> **Workflow permissions**.
    - Select **Read and write permissions** (allows the workflow to commit the updated `jobs.db` database back to Git to persist state).
    - Click **Save**.
-4. **Trigger Manually**: Go to the **Actions** tab, select **Scrape and Match Jobs**, click **Run workflow**, and run it. It will also run automatically every 6 hours.
+4. **Trigger Manually**: Go to the **Actions** tab, select **Scrape and Match Jobs**, click **Run workflow**, and run it. It will also run automatically every 8 hours.

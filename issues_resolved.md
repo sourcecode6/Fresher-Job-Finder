@@ -196,3 +196,11 @@
 * **Issue**: The embedding model only checked the skills/summary section at the top of the resume and missed keywords/skills in later project or experience sections.
 * **Cause**: `getEmbedding` in `embeddingService.js` truncated the resume to 2000 characters to avoid model input sequence limits.
 * **Resolution**: Replaced truncation with an overlapping chunking algorithm. The text is split into chunks of 2000 characters with 200 character overlap. Each chunk is embedded separately using the local SentenceTransformer model, and the resulting vectors are averaged and re-normalized.
+
+
+### 2026-09-27: Final Phase 1 Scraper Adjustments
+- **Silicon Labs / Microchip 422 Errors**: Resolved by mapping exact Workday site identifiers (`SiliconLabsCareers` and `microchip.wd5`).
+- **Keysight & Celestica**: Built new `jibe.py` adapter for Keysight and rewrote `successfactors.py` for HTML parsing for Celestica.
+- **Error Logging Hardening**: Updated adapters to throw exceptions on first-page 403/429 errors so `scraper.py` properly logs robot checks as `degraded` instead of silently returning 0 jobs.
+- **Headless Skip**: Left Synopsys, MediaTek, and Texas Instruments as disabled (`enabled: false`) to avoid Playwright dependency.
+- **Threshold Update**: Lowered global `MATCH_THRESHOLD` in `.env` to 50.0 to widen semantic match results.

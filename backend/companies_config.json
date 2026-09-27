@@ -28,22 +28,6 @@
     "workdaySubdomain": "nvidia.wd5"
   },
   {
-    "name": "Google",
-    "ats": "playwright",
-    "tier": 3,
-    "enabled": false,
-    "careerUrl": "https://www.google.com/about/careers/applications/jobs",
-    "filters": {}
-  },
-  {
-    "name": "Meta",
-    "ats": "unknown",
-    "tier": 3,
-    "enabled": false,
-    "careerUrl": "https://www.metacareers.com/jobs",
-    "filters": {}
-  },
-  {
     "name": "Microsoft",
     "ats": "eightfold",
     "tier": 2,
@@ -67,24 +51,6 @@
     },
     "eightfoldBaseUrl": "https://apply.careers.microsoft.com",
     "eightfoldDomain": "microsoft.com"
-  },
-  {
-    "name": "Apple",
-    "ats": "apple",
-    "tier": 1,
-    "enabled": false,
-    "careerUrl": "https://jobs.apple.com/",
-    "filters": {
-      "location": "India"
-    }
-  },
-  {
-    "name": "Amazon (AWS)",
-    "ats": "unknown",
-    "tier": 3,
-    "enabled": false,
-    "careerUrl": "https://amazon.jobs/",
-    "filters": {}
   },
   {
     "name": "AMD",
@@ -277,14 +243,6 @@
     "board_token": "cerebras"
   },
   {
-    "name": "Groq",
-    "ats": "unknown",
-    "tier": 3,
-    "enabled": false,
-    "careerUrl": "https://groq.com/careers/",
-    "filters": {}
-  },
-  {
     "name": "Juniper Networks",
     "ats": "workday",
     "tier": 3,
@@ -309,7 +267,7 @@
     "name": "Hewlett Packard Enterprise",
     "ats": "workday",
     "tier": 3,
-    "enabled": true,
+    "enabled": false,
     "careerUrl": "https://careers.hpe.com/",
     "filters": {},
     "workdayTenant": "hpe",
@@ -359,7 +317,7 @@
     "name": "Ericsson",
     "ats": "eightfold",
     "tier": 2,
-    "enabled": true,
+    "enabled": false,
     "careerUrl": "https://jobs.ericsson.com",
     "filters": {
       "locations": [
@@ -381,6 +339,57 @@
     "eightfoldDomain": "ericsson.com"
   },
   {
+    "name": "Graphcore",
+    "ats": "greenhouse",
+    "tier": 3,
+    "enabled": true,
+    "careerUrl": "https://www.graphcore.ai/careers",
+    "filters": {},
+    "board_token": "graphcore"
+  },
+  {
+    "name": "Google",
+    "ats": "playwright",
+    "tier": 3,
+    "enabled": false,
+    "careerUrl": "https://www.google.com/about/careers/applications/jobs",
+    "filters": {}
+  },
+  {
+    "name": "Meta",
+    "ats": "unknown",
+    "tier": 3,
+    "enabled": false,
+    "careerUrl": "https://www.metacareers.com/jobs",
+    "filters": {}
+  },
+  {
+    "name": "Apple",
+    "ats": "apple",
+    "tier": 1,
+    "enabled": false,
+    "careerUrl": "https://jobs.apple.com/",
+    "filters": {
+      "location": "India"
+    }
+  },
+  {
+    "name": "Amazon (AWS)",
+    "ats": "unknown",
+    "tier": 3,
+    "enabled": false,
+    "careerUrl": "https://amazon.jobs/",
+    "filters": {}
+  },
+  {
+    "name": "Groq",
+    "ats": "unknown",
+    "tier": 3,
+    "enabled": false,
+    "careerUrl": "https://groq.com/careers/",
+    "filters": {}
+  },
+  {
     "name": "Nokia",
     "ats": "unknown",
     "tier": 3,
@@ -397,12 +406,183 @@
     "filters": {}
   },
   {
-    "name": "Graphcore",
-    "ats": "greenhouse",
-    "tier": 3,
+    "name": "IBM",
+    "ats": "ibm",
+    "tier": 2,
+    "enabled": false,
+    "careerUrl": "https://www.ibm.com/careers",
+    "filters": {
+      "countries": [
+        "India",
+        "United Kingdom",
+        "Germany",
+        "France"
+      ],
+      "category": "Engineering/Technical"
+    }
+  },
+  {
+    "name": "Marvell",
+    "ats": "workday",
+    "tier": 2,
     "enabled": true,
-    "careerUrl": "https://www.graphcore.ai/careers",
-    "filters": {},
-    "board_token": "graphcore"
+    "careerUrl": "https://marvell.wd1.myworkdayjobs.com/MarvellCareers",
+    "filters": {
+      "locations": [
+        "India",
+        "United Kingdom",
+        "Germany",
+        "France"
+      ],
+      "searchText": "",
+      "limit": 20
+    },
+    "workdayTenant": "marvell",
+    "workdaySite": "MarvellCareers",
+    "workdaySubdomain": "marvell.wd1"
+  },
+  {
+    "name": "Cadence",
+    "ats": "workday",
+    "tier": 2,
+    "enabled": true,
+    "careerUrl": "https://cadence.wd1.myworkdayjobs.com/External_Careers",
+    "filters": {
+      "locations": [
+        "India",
+        "United Kingdom",
+        "Germany",
+        "France"
+      ],
+      "searchText": "",
+      "limit": 20
+    },
+    "workdayTenant": "cadence",
+    "workdaySite": "External_Careers",
+    "workdaySubdomain": "cadence.wd1"
+  },
+  {
+    "name": "Silicon Labs",
+    "ats": "workday",
+    "tier": 2,
+    "enabled": true,
+    "careerUrl": "https://silabs.wd1.myworkdayjobs.com/Careers",
+    "workdayTenant": "silabs",
+    "workdaySite": "SiliconLabsCareers",
+    "workdaySubdomain": "silabs.wd1"
+  },
+  {
+    "name": "Micron",
+    "ats": "workday",
+    "tier": 2,
+    "enabled": true,
+    "careerUrl": "https://micron.wd1.myworkdayjobs.com/External",
+    "filters": {
+      "locations": [
+        "India",
+        "United Kingdom",
+        "Germany",
+        "France"
+      ],
+      "searchText": "",
+      "limit": 20
+    },
+    "workdayTenant": "micron",
+    "workdaySite": "External",
+    "workdaySubdomain": "micron.wd1"
+  },
+  {
+    "name": "Microchip",
+    "ats": "workday",
+    "tier": 2,
+    "enabled": true,
+    "careerUrl": "https://microchip.wd1.myworkdayjobs.com/Microchip_Careers",
+    "workdayTenant": "microchiphr",
+    "workdaySite": "External",
+    "workdaySubdomain": "microchip.wd5"
+  },
+  {
+    "name": "Motorola Solutions",
+    "ats": "workday",
+    "tier": 2,
+    "enabled": true,
+    "careerUrl": "https://motorolasolutions.wd5.myworkdayjobs.com/Careers",
+    "filters": {
+      "locations": [
+        "India",
+        "United Kingdom",
+        "Germany",
+        "France"
+      ],
+      "searchText": "",
+      "limit": 20
+    },
+    "workdayTenant": "motorolasolutions",
+    "workdaySite": "Careers",
+    "workdaySubdomain": "motorolasolutions.wd5"
+  },
+  {
+    "name": "Synopsys",
+    "ats": "avature",
+    "tier": 2,
+    "enabled": false,
+    "careerUrl": "https://synopsys.avature.net/careers",
+    "filters": {
+      "locations": [
+        "India",
+        "United Kingdom",
+        "Germany",
+        "France"
+      ],
+      "searchText": ""
+    }
+  },
+  {
+    "name": "Keysight",
+    "ats": "jibe",
+    "tier": 2,
+    "enabled": true,
+    "careerUrl": "https://jobs.keysight.com",
+    "filters": {
+      "locations": [
+        "India",
+        "United Kingdom",
+        "Germany",
+        "France"
+      ]
+    },
+    "sf_domain": "keysight"
+  },
+  {
+    "name": "Celestica",
+    "ats": "successfactors",
+    "tier": 2,
+    "enabled": true,
+    "careerUrl": "https://careers.celestica.com",
+    "filters": {
+      "locations": [
+        "India",
+        "United Kingdom",
+        "Germany",
+        "France"
+      ]
+    },
+    "sf_domain": "celestica"
+  },
+  {
+    "name": "MediaTek",
+    "ats": "mediatek",
+    "tier": 2,
+    "enabled": false,
+    "careerUrl": "https://careers.mediatek.com",
+    "filters": {}
+  },
+  {
+    "name": "Texas Instruments",
+    "ats": "ti",
+    "tier": 2,
+    "enabled": false,
+    "careerUrl": "https://careers.ti.com",
+    "filters": {}
   }
 ]

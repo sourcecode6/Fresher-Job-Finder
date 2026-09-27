@@ -2,8 +2,8 @@ name: Scrape and Match Jobs
 
 on:
   schedule:
-    # Run every 6 hours (00:00, 06:00, 12:00, 18:00 UTC)
-    - cron: '0 */6 * * *'
+    # Run every 8 hours (00:00, 08:00, 16:00 UTC)
+    - cron: '0 */8 * * *'
   workflow_dispatch: # Allows manual triggering
 
 jobs:
@@ -26,7 +26,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r backend/nlp_service/requirements.txt
-          python -m playwright install chromium
 
       - name: Cache SentenceTransformer model
         uses: actions/cache@v4

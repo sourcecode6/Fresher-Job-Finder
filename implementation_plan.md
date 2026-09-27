@@ -1,5 +1,13 @@
 # AI Job Scraper App — Implementation Plan (v11 — Multi-Resume Support & Advanced Scoring)
 
+## Phase 8: New Company Integrations & Scraper Hardening (Completed)
+- **Workday Group 2:** Successfully mapped and integrated Marvell, Cadence, Silicon Labs, Micron, Microchip, and Motorola Solutions using the Workday JSON POST adapter. Resolved 422 errors for Silicon Labs and Microchip by strictly mapping their Workday Tenant and Site identifiers.
+- **Custom ATS Integration:** Built a new `jibe.py` adapter for Keysight (Jibe API) and overhauled the `successfactors.py` adapter to parse raw HTML for Celestica.
+- **Headless Skipped:** Synopsys (Avature SPA), MediaTek (Strapi SPA), and Texas Instruments (Phenom SPA) were investigated but officially marked as `disabled` to avoid introducing Playwright/Selenium heavy dependencies.
+- **Legacy Cleanup:** Disabled IBM, Ericsson, and HPE in the config as their endpoints expired.
+- **Robust Error Handling:** Modified all adapters to explicitly throw Python exceptions on non-200 responses (e.g., bot challenges) so the orchestrator correctly flags them as `degraded` and logs the errors in the daily email digest.
+- **Semantic Tuning:** Lowered the global `MATCH_THRESHOLD` in `.env` from 65.0 to 50.0 to widen the semantic net for closely related job titles.
+
 ## Phase 7: Multi-Resume Support & Advanced Scoring (Completed)
 - **Generic Multi-Resume Pipeline:** Migrated from a single resume to supporting up to 4 concurrent resumes. Created `user_resumes` table to store multiple profiles per user. The matcher now loads all active profiles and selects the highest match score per job.
 - **Automated Resume Change Detection:** Added Step 0 to `workflow_runner.py` which hashes all PDF files on disk and automatically re-imports them if new, modified, or deleted files are detected.
