@@ -28,11 +28,11 @@ backend\setup.bat
 | `EMAIL_USER` | Your Gmail address |
 | `EMAIL_PASS` | Gmail App Password ([get one here](https://myaccount.google.com/apppasswords)) |
 | `NOTIFY_EMAIL` | Where to send job digests (usually same as above) |
-| `MATCH_THRESHOLD | Min match % to notify (default: 50) |
+| `MATCH_THRESHOLD` | Min match % to notify (default: 40) |
 | `DATA_RETENTION_DAYS` | Days to keep job data (default: 3) |
-| `SCRAPE_INTERVAL_HOURS` | How often to scrape (default: 6) |
+| `SCRAPE_INTERVAL_HOURS` | How often to scrape (default: 8) |
 | `USER_YOE` | Your Years of Experience (default: 4) |
-| `MAX_CONCURRENT_COMPANIES` | Max number of companies to scrape concurrently (default: 3) |
+| `MAX_CONCURRENT_COMPANIES` | Max number of companies to scrape concurrently (default: 6) |
 
 ---
 
@@ -108,7 +108,6 @@ curl -X POST "http://localhost:3000/api/admin/activate?company=NVIDIA"
 | Company | ATS / Method | Location Filter |
 |---|---|---|
 | NVIDIA | Workday JSON POST | India + Remote |
-| Google | Playwright (SPA) | India / Engineering |
 | Arista Networks | SmartRecruiters REST API | India |
 | Cisco Systems | Custom `cisco` API | India |
 | Qualcomm | Eightfold AI pcsx API | India |

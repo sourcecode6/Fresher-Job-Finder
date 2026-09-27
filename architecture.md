@@ -34,17 +34,21 @@ The simplified, clean directory structure of the application is as follows:
 
 ```
 AI-Job-Scraper/
+├── .github/workflows/
+│   └── scrape_and_match.yml     # GitHub Actions CI/CD pipeline (Runs every 8h)
 ├── backend/
 │   ├── data/
 │   │   ├── jobs.db              # SQLite relational database
 │   │   └── skills_vocab.json    # Pre-compiled dictionary of technical skills
 │   ├── nlp_service/
-│   │   ├── venv_nlp/            # Python virtual environment (auto-created)
+│   │   ├── adapters/            # Modular ATS scraping logic (workday.py, jibe.py, etc.)
 │   │   ├── app.py               # FastAPI server and REST endpoints entry point
-│   │   ├── scraper.py           # Multi-ATS scraper orchestrator
+│   │   ├── workflow_runner.py   # CLI entry point for full pipeline execution
+│   │   ├── scraper.py           # Multi-ATS scraper orchestrator (Network I/O)
+│   │   ├── enricher.py          # NLP embedding generation (CPU-bound)
 │   │   ├── matcher.py           # NumPy-based semantic match calculations
 │   │   ├── email_sender.py      # SMTP-based HTML email digest engine
-│   │   ├── import_resume.py     # Offline/Online PDF resume parser script
+│   │   ├── import_resume.py     # PDF resume parser and vectorizer
 │   │   └── requirements.txt     # Python package dependencies
 │   ├── companies_config.json    # User-editable list of active companies
 │   ├── .env                     # Environment variables (Credentials & config)
@@ -80,7 +84,7 @@ Tracks registered user profiles and configuration preferences.
 ### 3.2. `companies`
 Lists tracked employers, ATS portals, scraped records, and degradation tracking.
 - `name` (TEXT, PRIMARY KEY): Unique company identifier (e.g., "AMD", "NVIDIA").
-- `ats` (TEXT): Portal type (e.g., "workday", "smartrecruiters", "cisco", "eightfold", "eightfold_v2", "greenhouse", "amd", "ibm", "arm", "jibe", "successfactors").
+- `ats` (TEXT): Portal type (e.g., "workday", "smartrecruiters", "cisco", "eightfold", "eightfold_v2", "greenhouse", "amd", "ibm", "arm", "jibe", "successfactors", "ti", "mediatek", "avature").
 - `tier` (INTEGER): Priority level for scraping.
 - `career_url` (TEXT): URL to the career home page.
 - `status` (TEXT): Status flags (`active`, `degraded`). Checked via database constraint.
@@ -136,7 +140,7 @@ Deduplicates matches and records notification dispatch histories.
   - Exposes REST API endpoints.
   - Runs background execution pools for tasks like scraping and matching, keeping responses non-blocking.
   - Implements two background loops on startup:
-    1. **Scraping Loop**: Runs every 6 hours (configurable via `SCRAPE_INTERVAL_HOURS`).
+    1. **Scraping Loop**: Runs every 8 hours (configurable via `SCRAPE_INTERVAL_HOURS`).
     2. **Cleanup Loop**: Runs daily at 2:00 AM, purging expired records from the database.
 - **Serverless Pipeline (`workflow_runner.py`)**:
   - Executes the full data pipeline (init, import, scrape, match, cleanup) sequentially in a single pass without booting a web server.
@@ -144,7 +148,7 @@ Deduplicates matches and records notification dispatch histories.
 
 ### 4.2. Multi-ATS Scraper Engine (`scraper.py`)
 - Acts as a dynamic orchestrator that crawls active companies **in parallel** using a `ThreadPoolExecutor` worker pool.
-- The concurrency limit is configurable via `maxConcurrentCompanies` (default: 3) to optimize CPU usage during parallel embedding generation.
+- The concurrency limit is configurable via `maxConcurrentCompanies` (default: 6) to optimize CPU usage during parallel embedding generation.
 - Utilizes a global thread lock (`db_lock`) to synchronize SQLite database reads and writes safely, releasing the lock during network HTTP requests and CPU-heavy `model.encode()` embedding calculations to prevent database locks while maintaining maximum parallelism.
 - Instead of housing all scraping logic, it imports specific, highly-modular ATS adapters from the `backend/nlp_service/adapters/` directory (e.g., `workday.py`, `eightfold_v2.py`, `greenhouse.py`).
 - Respects `robots.txt` rules and rate limits for each site via centralized `utils.py` helpers.
@@ -157,7 +161,7 @@ Deduplicates matches and records notification dispatch histories.
 ### 4.3. Semantic Match Engine (`matcher.py`)
 - Computes matching between the user's resume vector and scraped jobs:
   - **Weighted Similarity**:
-    $$\text{Score} = (\text{Cosine Similarity}_{\text{Title}} \times 0.5) + (\text{Cosine Similarity}_{\text{Description}} \times 0.5)$$
+    $$\text{Score} = (\text{Cosine Similarity}_{\text{Summary vs Title}} \times 0.25) + (\text{Cosine Similarity}_{\text{Full Resume vs Description}} \times 0.55) + (\text{Skills Coverage Ratio} \times 0.20)$$
   - **YoE Verification**: Determines if the job's minimum experience exceeds the user's configured experience.
   - **Deduplication**: Inserts new matches into `matched_jobs` with `notified = 0`.
   - **Location-Based Prioritized Sorting**: Groups matches prioritizing India-based jobs first (Rank 0), then United Kingdom and Europe (Rank 1), then Remote roles (Rank 2), then other regions (Rank 3), and sorts by score descending within each group.
@@ -196,16 +200,22 @@ sequenceDiagram
     participant DB as SQLite DB
     participant SMTP as SMTP Server
     
-    Loop->>Scraper: Trigger hourly cycle
+    Loop->>Scraper: Trigger 8-hour cycle
     Scraper->>DB: Query active companies
     loop Every Company
         Scraper->>Scraper: Check robots.txt & Fetch API data
         loop Every Job
-            Scraper->>Model: Encode Title & Description text
-            Scraper->>DB: Insert new job with embedding vectors
+            Scraper->>DB: Insert new job (embedding_status = pending)
         end
     end
-    Scraper-->>Loop: Cycle complete
+    Scraper-->>Loop: Scrape cycle complete
+    Loop->>Enricher: Trigger Enrichment cycle
+    Enricher->>DB: Fetch pending jobs
+    loop Every Pending Job
+        Enricher->>Model: Encode Title & Description text
+        Enricher->>DB: Update job with embedding vectors (status = done)
+    end
+    Enricher-->>Loop: Enrichment complete
     Loop->>Matcher: Trigger Match Cycle
     Matcher->>DB: Query users and matching jobs
     loop Every User
@@ -224,12 +234,13 @@ sequenceDiagram
 
 ## 6. Concurrency & Reliability Mitigations
 
-### 6.1. Database Connection Timeout
-SQLite only allows a single writer transaction. To prevent `database is locked` errors during concurrent background scraping writes and REST API writes, all database connection objects are instantiated with a timeout configuration:
+### 6.1. Thread-Safe Global Database Locking
+SQLite only allows a single writer transaction. To prevent `database is locked` errors during parallel scraping writes, the system uses a global Python `threading.Lock` (`db_lock`). 
+All connections are also instantiated with a timeout:
 ```python
 conn = sqlite3.connect(db_path, timeout=30.0)
 ```
-This forces the request thread to block and queue for up to 30 seconds, allowing background processes to complete their database transactions without dropping HTTP requests.
+The lock is carefully managed to release during slow network HTTP requests and CPU-bound NLP model processing, ensuring maximum concurrency without sacrificing database integrity.
 
 ### 6.2. Timezone Offset Normalization
 Dates scraped from ATS portals may contain timezone offsets (e.g. `+05:30` or `Z`). Python's `datetime.fromisoformat` parses these into offset-aware datetimes. To prevent `TypeError: can't compare offset-naive and offset-aware datetimes` during comparison checks, datetimes are normalized to naive representations:
@@ -256,3 +267,6 @@ SELECT * FROM companies WHERE status IN ('active', 'degraded')
 ```
 This enables degraded scrapers to automatically retry and recover their status to `active` on the next execution cycle rather than requiring manual admin reactivation.
 
+
+### 6.6. Strict Bot Challenge & 403 Handling
+Adapters explicitly check HTTP status codes and raise Python exceptions on non-200 responses (such as Cloudflare bot challenges or WAF blocks). This prevents the scraper from silently parsing captcha pages as valid data, immediately flags the company as `degraded` in the SQLite database, and surfaces the exact error in the next email digest for manual review.
