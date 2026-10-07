@@ -350,7 +350,7 @@
     "name": "Motorola Solutions",
     "ats": "workday",
     "tier": 2,
-    "enabled": true,
+    "enabled": false,
     "careerUrl": "https://motorolasolutions.wd5.myworkdayjobs.com/Careers",
     "filters": {
       "locations": [
