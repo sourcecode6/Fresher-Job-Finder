@@ -281,7 +281,21 @@
     "IPC",
     "Satellite Ephemeris",
     "Multiprocessing",
-    "RACH Inference"
+    "RACH Inference",
+    "Regex",
+    "Data Extraction",
+    "Data Cleaning",
+    "Data Transformation",
+    "Data Validation",
+    "Reconciliation",
+    "Workflow Automation",
+    "Statistical Analysis",
+    "Automated EDA",
+    "Excel",
+    "Oracle SQL",
+    "Docker Compose",
+    "GCP Cloud Run",
+    "Gemini"
   ],
   "aliases": {
     "k8s": "Kubernetes",

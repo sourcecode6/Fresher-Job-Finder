@@ -24,7 +24,7 @@ from backend.nlp_service.db_init import init_db
 
 
 
-app = FastAPI(title="AI Job Scraper Backend")
+app = FastAPI(title="fresherjobfinder Backend")
 
 # Enable CORS for frontend compatibility
 app.add_middleware(
@@ -51,7 +51,7 @@ class UserCompaniesPayload(BaseModel):
 @app.get("/")
 async def root():
     return {
-        "service": "AI Job Scraper Backend",
+        "service": "fresherjobfinder Backend",
         "status": "running",
         "version": "1.0.0",
         "docs": "See README.md for API usage with curl",

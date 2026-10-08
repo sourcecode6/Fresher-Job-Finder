@@ -1,4 +1,4 @@
-# AI Job Scraper — Personal Use
+# fresherjobfinder — Personal Use
 
 A local backend service that scrapes job listings from 25+ major tech companies every 8 hours, matches them against your resume using semantic AI, and emails you the matches.
 

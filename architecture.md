@@ -1,6 +1,6 @@
-# AI Job Scraper — Project Architecture
+# fresherjobfinder — Project Architecture
 
-This document provides a detailed overview of the system architecture, file layout, database schema, processing loops, and execution workflows of the **100% Python AI Job Scraper** application.
+This document provides a detailed overview of the system architecture, file layout, database schema, processing loops, and execution workflows of the **100% Python fresherjobfinder** application.
 
 ---
 
@@ -33,7 +33,7 @@ graph TD
 The simplified, clean directory structure of the application is as follows:
 
 ```
-AI-Job-Scraper/
+fresherjobfinder/
 ├── .github/workflows/
 │   └── scrape_and_match.yml     # GitHub Actions CI/CD pipeline (Runs every 8h)
 ├── backend/

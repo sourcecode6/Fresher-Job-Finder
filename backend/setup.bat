@@ -1,12 +1,12 @@
 @echo off
 setlocal
-title AI Job Scraper — Setup & Start
+title fresherjobfinder — Setup & Start
 cd /d "%~dp0"
 set PYTHONPATH=%~dp0..
 
 echo.
 echo  ╔═══════════════════════════════════════╗
-echo  ║     AI Job Scraper — Windows Setup    ║
+echo  ║     fresherjobfinder — Windows Setup    ║
 echo  ╚═══════════════════════════════════════╝
 echo.
 

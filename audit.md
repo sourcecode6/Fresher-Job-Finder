@@ -1,6 +1,6 @@
 # Compliance & Ethical Scraping Audit
 
-This document outlines the strict compliance measures implemented in the AI Job Scraper to ensure ethical data acquisition and adherence to legal guidelines.
+This document outlines the strict compliance measures implemented in the fresherjobfinder to ensure ethical data acquisition and adherence to legal guidelines.
 
 ## 1. Guiding Principles
 
