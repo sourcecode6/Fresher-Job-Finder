@@ -7,6 +7,7 @@ import numpy as np
 from datetime import datetime, timedelta
 from backend.nlp_service import email_sender
 from backend.nlp_service.scraper import get_db_path, load_settings
+from backend.nlp_service.utils import derive_yoe_from_title
 
 def compute_similarity(vec_a, vec_b):
     if vec_a is None or vec_b is None or len(vec_a) != len(vec_b):
@@ -140,6 +141,21 @@ def match_for_user(email):
 
     match_for_user_internal(dict(user))
 
+def load_target_locations_from_config():
+    config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'companies_config.json'))
+    locations = set()
+    if os.path.exists(config_path):
+        try:
+            with open(config_path, 'r', encoding='utf-8') as f:
+                companies = json.load(f)
+                for comp in companies:
+                    for loc in comp.get('filters', {}).get('locations', []):
+                        if loc and isinstance(loc, str):
+                            locations.add(loc.strip().lower())
+        except Exception as e:
+            print(f"Error loading companies_config.json: {e}")
+    return list(locations)
+
 def match_for_user_internal(user):
     email = user['email']
     selected_companies = json.loads(user['selected_companies'] or '[]')
@@ -182,13 +198,15 @@ def match_for_user_internal(user):
         conn.close()
         return
 
-    # 1. Fetch eligible jobs
-    jobs = _fetch_eligible_jobs(cursor, selected_companies)
+    target_locations = load_target_locations_from_config()
+
+    # 1. Fetch eligible jobs in target locations
+    jobs = _fetch_eligible_jobs(cursor, selected_companies, target_locations)
 
     # 2. Calculate matches
     new_matches = _calculate_matches(
         jobs, resume_rows, has_multi, resume_skills_union,
-        threshold, retention_days, email, cursor
+        threshold, retention_days, email, cursor, user_yoe, target_locations
     )
 
     # 3. Save new matches
@@ -212,24 +230,47 @@ def match_for_user_internal(user):
 
     conn.close()
 
-def _fetch_eligible_jobs(cursor, selected_companies):
+def _fetch_eligible_jobs(cursor, selected_companies, target_locations=None):
     placeholders = ",".join(["?"] * len(selected_companies))
+    loc_clause = ""
+    loc_params = []
+    if target_locations:
+        loc_clause = " AND (" + " OR ".join(["LOWER(location) LIKE ?"] * len(target_locations)) + ")"
+        loc_params = [f"%{loc}%" for loc in target_locations]
+
     query = f"""
         SELECT * FROM jobs
         WHERE company_name IN ({placeholders})
         AND embedding_status = 'done'
         AND (embedding_vector IS NOT NULL OR (title_vector IS NOT NULL AND description_vector IS NOT NULL))
         AND datetime(expires_at) > datetime('now')
+        {loc_clause}
     """
-    cursor.execute(query, selected_companies)
+    cursor.execute(query, selected_companies + loc_params)
     return [dict(row) for row in cursor.fetchall()]
 
 def _calculate_matches(jobs, resume_rows, has_multi, resume_skills_union,
-                       threshold, retention_days, email, cursor):
+                       threshold, retention_days, email, cursor, user_yoe, target_locations=None):
     new_matches = []
 
     for job in jobs:
         if not is_job_within_retention(job['posted_date'], job['scraped_at'], retention_days):
+            continue
+
+        if target_locations:
+            job_loc = (job.get('location') or '').lower()
+            if not any(t_loc in job_loc for t_loc in target_locations):
+                continue
+            
+        req_yoe = job.get('required_yoe')
+        if req_yoe is None:
+            req_yoe = derive_yoe_from_title(job.get('job_title'))
+        else:
+            title_yoe = derive_yoe_from_title(job.get('job_title'))
+            if title_yoe is not None and title_yoe > req_yoe:
+                req_yoe = title_yoe
+
+        if req_yoe is not None and req_yoe > user_yoe:
             continue
 
         best_score    = 0.0
@@ -282,7 +323,7 @@ def _calculate_matches(jobs, resume_rows, has_multi, resume_skills_union,
                     "location":      job['location'],
                     "apply_url":     job['apply_url'],
                     "skills_display": job['skills_display'],
-                    "required_yoe":  job['required_yoe'],
+                    "required_yoe":  req_yoe,
                     "match_score":   round(best_score, 1),
                     "posted_date":   job['posted_date'],
                     "expires_at":    job['expires_at'],

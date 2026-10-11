@@ -80,9 +80,56 @@ def extract_skills(text):
 
     return list(found)
 
-def extract_yoe(text):
-    if not text:
+def derive_yoe_from_title(title):
+    if not title:
         return None
+    t = title.lower()
+
+    # 1. Explicit years mentioned directly in title (e.g. '8-12 yrs', '7+ years', '4-8 Yrs', '10+ years')
+    range_match = re.search(r'(\d+)\s*(?:-|to)\s*\d+\s*(?:yrs?|years?)', t)
+    if range_match:
+        return int(range_match.group(1))
+
+    plus_match = re.search(r'(\d+)\s*\+?\s*(?:yrs?|years?)', t)
+    if plus_match:
+        return int(plus_match.group(1))
+
+    # 2. Executive / High Leadership
+    if re.search(r'\b(director|vice president|vp|head of)\b', t):
+        return 10
+
+    # 3. Principal / Architect
+    if re.search(r'\b(principal|architect|fellow)\b', t):
+        return 8
+
+    # 4. Staff / Lead / Manager
+    if re.search(r'\b(staff|lead|manager|tech lead|team lead)\b', t):
+        return 6
+
+    # 5. Senior
+    if re.search(r'\b(senior|sr\b|sr\.)\b', t):
+        return 4
+
+    # 6. Level numbers (e.g. Engineer III / Level 3 vs Level 2 vs Level 1)
+    if re.search(r'\b(?:engineer|developer|sde|mts)\s*(?:3|iii|iv|4)\b|\b(?:l3|l4|level\s*[34])\b', t):
+        return 4
+    if re.search(r'\b(?:engineer|developer|sde|mts)\s*(?:2|ii)\b|\b(?:l2|level\s*2|mid-level)\b', t):
+        return 2
+    if re.search(r'\b(?:associate|junior|jr\b|jr\.|entry|entry-level)\b|\b(?:engineer|developer|sde|mts)\s*(?:1|i)\b|\b(?:l1|level\s*1)\b', t):
+        return 0
+
+    # 7. Intern / College Grad / Trainee / Fresher
+    if re.search(r'\b(intern|internship|trainee|graduate|campus|fresher|college grad|new grad|university grad)\b', t):
+        return 0
+
+    return None
+
+def extract_yoe(text, title=None):
+    title_yoe = derive_yoe_from_title(title) if title else None
+
+    if not text:
+        return title_yoe
+
     pattern = r'(?:minimum\s+(?:of\s+)?|min\s+)?(\d+)(?:\s*(?:-|to)\s*(\d+))?\s*\+?\s*years?'
     matches = []
     for match in re.finditer(pattern, text, re.IGNORECASE):
@@ -93,18 +140,19 @@ def extract_yoe(text):
         is_overall = any(w in context for w in ['total', 'overall', 'minimum', 'min', 'at least'])
         matches.append({'minVal': min_val, 'isOverall': is_overall})
 
-    if not matches:
-        return None
+    desc_yoe = None
+    if matches:
+        overall_match = next((m for m in matches if m['isOverall']), None)
+        if overall_match:
+            desc_yoe = overall_match['minVal']
+        else:
+            reasonable_matches = [m for m in matches if m['minVal'] <= 15]
+            if reasonable_matches:
+                desc_yoe = reasonable_matches[0]['minVal']
 
-    overall_match = next((m for m in matches if m['isOverall']), None)
-    if overall_match:
-        return overall_match['minVal']
-
-    reasonable_matches = [m for m in matches if m['minVal'] <= 15]
-    if reasonable_matches:
-        return reasonable_matches[0]['minVal']
-
-    return None
+    if desc_yoe is not None and title_yoe is not None:
+        return max(desc_yoe, title_yoe)
+    return desc_yoe if desc_yoe is not None else title_yoe
 
 # Robots.txt helpers
 class RobotsTxtParser:

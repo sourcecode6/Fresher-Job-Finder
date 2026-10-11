@@ -52,6 +52,10 @@ def scrape_cisco(company, filters):
 
     cookie_header, csrf_token = get_cisco_csrf()
 
+    known_indian_cities = {"bangalore", "bengaluru", "hyderabad", "pune", "mumbai", "delhi", "chennai", "gurgaon", "noida"}
+    is_city_filter = any(loc.lower() in known_indian_cities for loc in locations)
+    selected_fields = {"country": ["India"], "city": locations} if is_city_filter else {"country": locations}
+
     while True:
         body = {
             "sortBy": "",
@@ -69,9 +73,7 @@ def scrape_cisco(company, filters):
             "siteType": "external",
             "keywords": keywords,
             "global": True,
-            "selected_fields": {
-                "country": locations
-            },
+            "selected_fields": selected_fields,
             "lang": "en_global",
             "deviceType": "desktop",
             "country": "global",
@@ -104,7 +106,9 @@ def scrape_cisco(company, filters):
                 print("ML_JOB_PARSER:", j.get('ml_job_parser'))
             job_id = j.get('jobId') or j.get('reqId') or j.get('jobSeqNo') or str(int(time.time()))
             loc = j.get('location') or ", ".join(filter(None, [j.get('city'), j.get('state'), j.get('country')]))
-            job_url = j.get('applyUrl') or f"https://careers.cisco.com/global/en/job/{job_id}"
+            if is_city_filter and not any(c.lower() in loc.lower() for c in locations):
+                continue
+            job_url = f"https://careers.cisco.com/global/en/job/{job_id}" if not j.get('applyUrl') else j.get('applyUrl')
 
             teaser = j.get('descriptionTeaser', '')
             skills_list = j.get('ml_skills', [])

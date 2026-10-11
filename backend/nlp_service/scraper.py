@@ -173,7 +173,7 @@ def run_acquisition_cycle():
             else:
                 posted_date_str, expires_at_str = parse_relative_date(job['postedDate'], retention)
                 skills = extract_skills(f"{job['jobTitle']} {job['department']} {job['jobDescription']}")
-                yoe = extract_yoe(job['jobDescription'])
+                yoe = extract_yoe(job['jobDescription'], title=job['jobTitle'])
                 jobs_to_insert.append((
                     name, job['jobId'], job['jobTitle'], job['location'], job['department'],
                     posted_date_str, job['employmentType'], job['jobDescription'], job['url'], job['applyUrl'],

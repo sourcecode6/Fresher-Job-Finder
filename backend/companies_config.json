@@ -7,17 +7,10 @@
     "careerUrl": "https://careers.amd.com/careers-home/jobs",
     "filters": {
       "locations": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France",
-        "Poland",
-        "Netherlands",
-        "Ireland",
-        "Italy",
-        "Spain",
-        "Sweden",
-        "Switzerland"
+        "Bangalore",
+        "Bengaluru",
+        "Hyderabad",
+        "Pune"
       ],
       "keywords": ""
     }
@@ -30,17 +23,7 @@
     "careerUrl": "https://jobs.smartrecruiters.com/AristaNetworks",
     "filters": {
       "countries": [
-        "in",
-        "gb",
-        "de",
-        "fr",
-        "pl",
-        "nl",
-        "ie",
-        "it",
-        "es",
-        "se",
-        "ch"
+        "in"
       ]
     },
     "smartRecruitersId": "AristaNetworks"
@@ -53,17 +36,10 @@
     "careerUrl": "https://careers.arm.com",
     "filters": {
       "locations": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France",
-        "Poland",
-        "Netherlands",
-        "Ireland",
-        "Italy",
-        "Spain",
-        "Sweden",
-        "Switzerland"
+        "Bangalore",
+        "Bengaluru",
+        "Hyderabad",
+        "Pune"
       ]
     }
   },
@@ -75,18 +51,10 @@
     "careerUrl": "https://broadcom.wd1.myworkdayjobs.com/External_Career",
     "filters": {
       "locations": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France",
-        "Poland",
-        "Netherlands",
-        "Ireland",
-        "Italy",
-        "Spain",
-        "Sweden",
-        "Switzerland",
-        "Remote"
+        "Bangalore",
+        "Bengaluru",
+        "Hyderabad",
+        "Pune"
       ],
       "searchText": "",
       "limit": 20
@@ -103,17 +71,10 @@
     "careerUrl": "https://cadence.wd1.myworkdayjobs.com/External_Careers",
     "filters": {
       "locations": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France",
-        "Poland",
-        "Netherlands",
-        "Ireland",
-        "Italy",
-        "Spain",
-        "Sweden",
-        "Switzerland"
+        "Bangalore",
+        "Bengaluru",
+        "Hyderabad",
+        "Pune"
       ],
       "searchText": "",
       "limit": 20
@@ -130,17 +91,10 @@
     "careerUrl": "https://careers.celestica.com",
     "filters": {
       "locations": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France",
-        "Poland",
-        "Netherlands",
-        "Ireland",
-        "Italy",
-        "Spain",
-        "Sweden",
-        "Switzerland"
+        "Bangalore",
+        "Bengaluru",
+        "Hyderabad",
+        "Pune"
       ]
     },
     "sf_domain": "celestica"
@@ -163,17 +117,10 @@
     "filters": {
       "keywords": "engineer",
       "locations": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France",
-        "Poland",
-        "Netherlands",
-        "Ireland",
-        "Italy",
-        "Spain",
-        "Sweden",
-        "Switzerland"
+        "Bangalore",
+        "Bengaluru",
+        "Hyderabad",
+        "Pune"
       ]
     }
   },
@@ -203,18 +150,10 @@
     "careerUrl": "https://intel.wd1.myworkdayjobs.com/en-US/External",
     "filters": {
       "locations": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France",
-        "Poland",
-        "Netherlands",
-        "Ireland",
-        "Italy",
-        "Spain",
-        "Sweden",
-        "Switzerland",
-        "Remote"
+        "Bangalore",
+        "Bengaluru",
+        "Hyderabad",
+        "Pune"
       ],
       "searchText": "",
       "limit": 20
@@ -242,17 +181,10 @@
     "careerUrl": "https://jobs.keysight.com",
     "filters": {
       "locations": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France",
-        "Poland",
-        "Netherlands",
-        "Ireland",
-        "Italy",
-        "Spain",
-        "Sweden",
-        "Switzerland"
+        "Bangalore",
+        "Bengaluru",
+        "Hyderabad",
+        "Pune"
       ]
     },
     "sf_domain": "keysight"
@@ -265,17 +197,10 @@
     "careerUrl": "https://marvell.wd1.myworkdayjobs.com/MarvellCareers",
     "filters": {
       "locations": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France",
-        "Poland",
-        "Netherlands",
-        "Ireland",
-        "Italy",
-        "Spain",
-        "Sweden",
-        "Switzerland"
+        "Bangalore",
+        "Bengaluru",
+        "Hyderabad",
+        "Pune"
       ],
       "searchText": "",
       "limit": 20
@@ -302,17 +227,10 @@
     "careerUrl": "https://micron.wd1.myworkdayjobs.com/External",
     "filters": {
       "locations": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France",
-        "Poland",
-        "Netherlands",
-        "Ireland",
-        "Italy",
-        "Spain",
-        "Sweden",
-        "Switzerland"
+        "Bangalore",
+        "Bengaluru",
+        "Hyderabad",
+        "Pune"
       ],
       "searchText": "",
       "limit": 20
@@ -329,17 +247,10 @@
     "careerUrl": "https://careers.microsoft.com",
     "filters": {
       "locations": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France",
-        "Poland",
-        "Netherlands",
-        "Ireland",
-        "Italy",
-        "Spain",
-        "Sweden",
-        "Switzerland"
+        "Bangalore",
+        "Bengaluru",
+        "Hyderabad",
+        "Pune"
       ],
       "query": ""
     },
@@ -354,17 +265,10 @@
     "careerUrl": "https://motorolasolutions.wd5.myworkdayjobs.com/Careers",
     "filters": {
       "locations": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France",
-        "Poland",
-        "Netherlands",
-        "Ireland",
-        "Italy",
-        "Spain",
-        "Sweden",
-        "Switzerland"
+        "Bangalore",
+        "Bengaluru",
+        "Hyderabad",
+        "Pune"
       ],
       "searchText": "",
       "limit": 20
@@ -391,18 +295,10 @@
     "careerUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite",
     "filters": {
       "locations": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France",
-        "Poland",
-        "Netherlands",
-        "Ireland",
-        "Italy",
-        "Spain",
-        "Sweden",
-        "Switzerland",
-        "Remote"
+        "Bangalore",
+        "Bengaluru",
+        "Hyderabad",
+        "Pune"
       ],
       "searchText": "",
       "limit": 20
@@ -430,17 +326,10 @@
     "careerUrl": "https://careers.qualcomm.com",
     "filters": {
       "locations": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France",
-        "Poland",
-        "Netherlands",
-        "Ireland",
-        "Italy",
-        "Spain",
-        "Sweden",
-        "Switzerland"
+        "Bangalore",
+        "Bengaluru",
+        "Hyderabad",
+        "Pune"
       ],
       "query": ""
     },
@@ -455,18 +344,10 @@
     "careerUrl": "https://sec.wd3.myworkdayjobs.com/Samsung_Careers",
     "filters": {
       "locations": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France",
-        "Poland",
-        "Netherlands",
-        "Ireland",
-        "Italy",
-        "Spain",
-        "Sweden",
-        "Switzerland",
-        "Remote"
+        "Bangalore",
+        "Bengaluru",
+        "Hyderabad",
+        "Pune"
       ],
       "searchText": "",
       "limit": 20
@@ -511,17 +392,10 @@
     "careerUrl": "https://jobs.ericsson.com",
     "filters": {
       "locations": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France",
-        "Poland",
-        "Netherlands",
-        "Ireland",
-        "Italy",
-        "Spain",
-        "Sweden",
-        "Switzerland"
+        "Bangalore",
+        "Bengaluru",
+        "Hyderabad",
+        "Pune"
       ],
       "query": ""
     },
@@ -563,10 +437,7 @@
     "careerUrl": "https://www.ibm.com/careers",
     "filters": {
       "countries": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France"
+        "India"
       ],
       "category": "Engineering/Technical"
     }
@@ -603,17 +474,10 @@
     "careerUrl": "https://synopsys.avature.net/careers",
     "filters": {
       "locations": [
-        "India",
-        "United Kingdom",
-        "Germany",
-        "France",
-        "Poland",
-        "Netherlands",
-        "Ireland",
-        "Italy",
-        "Spain",
-        "Sweden",
-        "Switzerland"
+        "Bangalore",
+        "Bengaluru",
+        "Hyderabad",
+        "Pune"
       ],
       "searchText": ""
     }
