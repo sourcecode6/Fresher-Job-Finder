@@ -57,7 +57,7 @@ def run_enrichment_cycle():
 
             cursor.execute("""
                 UPDATE jobs 
-                SET title_vector = ?, description_vector = ?, embedding_vector = ?, embedding_status = 'done'
+                SET title_vector = ?, description_vector = ?, embedding_vector = ?, embedding_status = 'completed'
                 WHERE id = ?
             """, (title_vec_str, desc_vec_str, desc_vec_str, job['id']))
             

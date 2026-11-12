@@ -139,13 +139,17 @@ def init_db():
             )
         """)
 
-        # Add winning_label and has_multi to matched_jobs for email display
+        # Add winning_label, has_multi, and notified to matched_jobs for email display
         try:
             cursor.execute("ALTER TABLE matched_jobs ADD COLUMN winning_label TEXT")
         except Exception:
             pass
         try:
             cursor.execute("ALTER TABLE matched_jobs ADD COLUMN has_multi INTEGER DEFAULT 0")
+        except Exception:
+            pass
+        try:
+            cursor.execute("ALTER TABLE matched_jobs ADD COLUMN notified INTEGER DEFAULT 0")
         except Exception:
             pass
 
@@ -165,17 +169,20 @@ def init_db():
     configs = load_companies_config()
     if configs:
         for c in configs:
+            target_status = 'active' if c.get('enabled', True) else 'disabled'
             cursor.execute("""
-                INSERT INTO companies (name, ats, tier, career_url, filters)
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO companies (name, ats, tier, career_url, filters, status)
+                VALUES (?, ?, ?, ?, ?, ?)
                 ON CONFLICT(name) DO UPDATE SET
                   ats=excluded.ats,
                   tier=excluded.tier,
                   career_url=excluded.career_url,
-                  filters=excluded.filters
+                  filters=excluded.filters,
+                  status=excluded.status
             """, (
                 c['name'], c['ats'], c['tier'], c.get('careerUrl', ''),
-                json.dumps(c.get('filters', {}))
+                json.dumps(c.get('filters', {})),
+                target_status
             ))
         conn.commit()
         print(f"Upserted {len(configs)} companies into database.")

@@ -55,7 +55,8 @@ def scrape_workday(company, filters):
 
         total = data.get('total', 0)
         offset += len(postings)
-        if offset >= total or len(postings) < limit:
+        max_jobs = filters.get('max_jobs', 200)
+        if offset >= total or len(postings) < limit or len(jobs) >= max_jobs:
             has_more = False
 
     return jobs

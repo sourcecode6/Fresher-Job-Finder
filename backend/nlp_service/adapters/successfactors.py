@@ -34,6 +34,10 @@ def scrape_successfactors(company, filters):
             
             if not rows:
                 break
+
+            max_jobs = filters.get('max_jobs', 150)
+            if len(jobs) >= max_jobs:
+                break
                 
             for row in rows:
                 title_a = row.select_one('.jobTitle-link')
@@ -64,6 +68,8 @@ def scrape_successfactors(company, filters):
                 })
                 
             startrow += 25
+            if len(jobs) >= max_jobs:
+                break
             time.sleep(3)
             
     return jobs

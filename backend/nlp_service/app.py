@@ -15,7 +15,10 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 
 # Load emails module (runs load_env on import)
-import email_sender
+try:
+    from backend.nlp_service import email_sender
+except ImportError:
+    import email_sender
 from backend.nlp_service.scraper import run_acquisition_cycle, load_settings, get_db_path, run_cleanup, extract_skills
 from backend.nlp_service.matcher import run_match_cycle, match_for_user
 from backend.nlp_service.logger import log_nlp_event, log_scrape_error

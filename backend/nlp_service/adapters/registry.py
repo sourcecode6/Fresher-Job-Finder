@@ -14,6 +14,7 @@ from backend.nlp_service.adapters.mediatek import scrape_mediatek
 from backend.nlp_service.adapters.ti import scrape_ti
 from backend.nlp_service.adapters.avature import scrape_avature
 from backend.nlp_service.adapters.jibe import scrape_jibe
+from backend.nlp_service.adapters.lever import scrape_lever
 
 def get_target_url(ats, company):
     urls = {
@@ -27,7 +28,8 @@ def get_target_url(ats, company):
         'mediatek': lambda c: c.get('careerUrl'),
         'ti': lambda c: c.get('careerUrl'),
         'avature': lambda c: c.get('careerUrl'),
-        'jibe': lambda c: c.get('careerUrl')
+        'jibe': lambda c: c.get('careerUrl'),
+        'lever': lambda c: f"https://api.lever.co/v0/postings/{c.get('lever_company') or c.get('leverSite')}?mode=json"
     }
     if ats in urls:
         return urls[ats](company)
@@ -50,7 +52,8 @@ def run_adapter(ats, company, filters):
         'mediatek': scrape_mediatek,
         'ti': scrape_ti,
         'avature': scrape_avature,
-        'jibe': scrape_jibe
+        'jibe': scrape_jibe,
+        'lever': scrape_lever
     }
     if ats in adapters:
         return adapters[ats](company, filters)

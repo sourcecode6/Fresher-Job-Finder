@@ -38,15 +38,18 @@ def scrape_smartrecruiters(company, filters):
                 location = ", ".join(filter(None, location_parts))
                 job_url = f"https://jobs.smartrecruiters.com/{company_id}/{p.get('id')}"
 
+                cf = p.get('customField')
+                desc = cf.get('description', '') if isinstance(cf, dict) else ''
+
                 jobs.append({
                     "companyName": company['name'],
                     "jobId": str(job_id),
                     "jobTitle": p.get('name', 'Unknown Title'),
                     "location": location,
-                    "department": p.get('department', {}).get('label', ''),
+                    "department": p.get('department', {}).get('label', '') if isinstance(p.get('department'), dict) else '',
                     "postedDate": p.get('releasedDate', datetime.utcnow().isoformat() + 'Z'),
-                    "employmentType": p.get('typeOfEmployment', {}).get('label', 'Full-time'),
-                    "jobDescription": p.get('customField', {}).get('description', ''),
+                    "employmentType": p.get('typeOfEmployment', {}).get('label', 'Full-time') if isinstance(p.get('typeOfEmployment'), dict) else 'Full-time',
+                    "jobDescription": desc,
                     "url": job_url,
                     "applyUrl": job_url
                 })

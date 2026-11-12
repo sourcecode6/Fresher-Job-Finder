@@ -1,6 +1,9 @@
 fastapi>=0.100.0
 uvicorn>=0.22.0
-sentence-transformers>=2.2.0
+sentence-transformers>=2.2.0,<4.0.0
+transformers<5.0.0
+regex==2024.5.15
+scikit-learn==1.4.2
 pypdf>=3.1.0
 beautifulsoup4>=4.12.0
 requests>=2.31.0

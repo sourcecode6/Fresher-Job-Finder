@@ -73,8 +73,9 @@ def scrape_company(company_row):
 
     target_url = get_target_url(ats, company)
 
-    # Check robots.txt compliance
-    if tier >= 2 and ats != 'workday':
+    # Check robots.txt compliance (exempt official public REST APIs)
+    api_ats = ('workday', 'smartrecruiters', 'greenhouse', 'lever', 'ashbyhq', 'eightfold', 'eightfold_v2')
+    if tier >= 2 and ats not in api_ats:
         if not is_allowed(target_url):
             log_scrape_error(f"[{name}] Blocked by robots.txt — skipping (target_url={target_url})")
             return {"name": name, "status": "degraded", "error": "Blocked by robots.txt", "raw_jobs": []}

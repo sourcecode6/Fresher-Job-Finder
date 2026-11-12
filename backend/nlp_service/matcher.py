@@ -211,6 +211,7 @@ def match_for_user_internal(user):
 
     # 3. Save new matches
     _save_new_matches(cursor, email, new_matches)
+    conn.commit()
 
     # 4. Fetch pending matches
     all_matches = _combine_pending_matches(cursor, email, new_matches, retention_days)
@@ -241,7 +242,7 @@ def _fetch_eligible_jobs(cursor, selected_companies, target_locations=None):
     query = f"""
         SELECT * FROM jobs
         WHERE company_name IN ({placeholders})
-        AND embedding_status = 'done'
+        AND embedding_status = 'completed'
         AND (embedding_vector IS NOT NULL OR (title_vector IS NOT NULL AND description_vector IS NOT NULL))
         AND datetime(expires_at) > datetime('now')
         {loc_clause}

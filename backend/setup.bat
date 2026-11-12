@@ -1,12 +1,12 @@
 @echo off
-setlocal
+setlocal EnableDelayedExpansion
 title fresherjobfinder — Setup & Start
 cd /d "%~dp0"
 set PYTHONPATH=%~dp0..
 
 echo.
 echo  ╔═══════════════════════════════════════╗
-echo  ║     fresherjobfinder — Windows Setup    ║
+echo  ║     fresherjobfinder — Windows Setup  ║
 echo  ╚═══════════════════════════════════════╝
 echo.
 
@@ -26,7 +26,17 @@ for /f "tokens=5" %%a in ('netstat -aon ^| findstr :%TARGET_PORT% ^| findstr LIS
 
 
 
-:: Check Python
+:: Check Python — prefer official CPython install over Microsoft Store
+set "PY312=C:\Python312\python.exe"
+set "PY312B=%LOCALAPPDATA%\Programs\Python\Python312\python.exe"
+set "PY311=%LOCALAPPDATA%\Programs\Python\Python311\python.exe"
+set "PYTHON_EXE="
+if exist "%PY312%" set "PYTHON_EXE=%PY312%"
+if defined PYTHON_EXE goto :python_found
+if exist "%PY312B%" set "PYTHON_EXE=%PY312B%"
+if defined PYTHON_EXE goto :python_found
+if exist "%PY311%" set "PYTHON_EXE=%PY311%"
+if defined PYTHON_EXE goto :python_found
 where python >nul 2>&1
 if %errorlevel% neq 0 (
     echo  [ERROR] Python is not installed or not in PATH.
@@ -34,19 +44,22 @@ if %errorlevel% neq 0 (
     pause
     exit /b 1
 )
-for /f "tokens=*" %%v in ('python --version') do set PYTHON_VER=%%v
-echo  [OK] Python %PYTHON_VER% found
+set "PYTHON_EXE=python"
+
+:python_found
+for /f "tokens=*" %%v in ('"%PYTHON_EXE%" --version') do set PYTHON_VER=%%v
+echo  [OK] %PYTHON_VER% found
 
 :: Setup Python virtual environment
 echo.
 echo  [1/5] Setting up Python virtual environment...
 if not exist "nlp_service\venv_nlp" (
-    call python -m venv nlp_service\venv_nlp
+    call "%PYTHON_EXE%" -m venv nlp_service\venv_nlp
 )
 
 echo  [2/5] Upgrading pip and installing requirements...
 call .\nlp_service\venv_nlp\Scripts\python.exe -m pip install --upgrade pip >nul 2>&1
-call .\nlp_service\venv_nlp\Scripts\pip.exe install -r .\nlp_service\requirements.txt
+call .\nlp_service\venv_nlp\Scripts\python.exe -m pip install -r .\nlp_service\requirements.txt
 if %errorlevel% neq 0 (
     echo  [ERROR] Failed to install Python dependencies.
     pause
